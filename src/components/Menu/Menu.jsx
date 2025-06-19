@@ -1,5 +1,5 @@
 import '@/styles/Menu.css';
-import Link from './Link';
+import Link from '@/components/Menu/Link.jsx';
 import BuilderIcon from '@/assets/builder.svg';
 import CustomizeIcon from '@/assets/customize.svg';
 

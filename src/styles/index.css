@@ -11,3 +11,26 @@ main {
 	margin-top: 30px;
 	max-width: 1250px;
 }
+
+.section-title {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title img {
+    width: 30px;
+    height: auto;
+}
+
+.section-content {
+    display: flex;
+	flex-direction: column;
+	gap: 25px;
+	align-items: flex-start;
+}
+
+.section-content-form {
+    width: 100%;
+}

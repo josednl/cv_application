@@ -1,4 +1,4 @@
-export default function Input({ label = '', type = 'text', textarea = false, id = '', icon = '', required = false, placeholder = '', block = true, customStyles = {}, ...rest }) {
+export default function Input({ label = '', type = 'text', textarea = false, id = '', icon = '', recommended = false, optional = false, required = false, placeholder = '', block = true, customStyles = {}, ...rest }) {
     const defaultInputStyles = {
         width: (block ? '100%' : '50%'),
         padding: '10px',
@@ -20,12 +20,12 @@ export default function Input({ label = '', type = 'text', textarea = false, id 
         marginBottom: '8px',
     }
 
-    const pillStyles = {
+    const recommendedStyles = {
         display: 'inline-block',
         padding: '2px 6px',
         fontSize: '12px',
         fontStyle: 'italic',
-        color: 'white',
+        color: '#ffffff',
         backgroundColor: '#3b82f6',
         borderRadius: '9999px',
         whiteSpace: 'nowrap',
@@ -36,12 +36,24 @@ export default function Input({ label = '', type = 'text', textarea = false, id 
         height: '100px',
     }
 
+    const optionalStyles = {
+        display: 'inline-block',
+        padding: '2px 6px',
+        fontSize: '12px',
+        fontStyle: 'italic',
+        color: '#000000',
+        backgroundColor: '#f0b630',
+        borderRadius: '9999px',
+        whiteSpace: 'nowrap',
+    }
+
     return(
         <div className='input-group'>
             <div style={headerStyle}>
                 {icon && <img src={icon} alt={`${label} icon`} />} 
                 <label style={labelStyles} htmlFor={id}>{label}</label> 
-                {required ? '' : <span style={pillStyles}>recommended</span>}
+                {recommended && <span style={recommendedStyles}>recommended</span>}
+                {optional && <span style={optionalStyles}>optional</span>}
             </div>
             {textarea ? (
                 <textarea id={id} placeholder={placeholder} style={{...defaultInputStyles, ...defaultTextareaStyles, ...customStyles}} required={required} {...rest}></textarea>
