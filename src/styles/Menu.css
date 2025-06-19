@@ -1,0 +1,17 @@
+.menu {
+    display: flex;
+    padding: 25px;
+    background-color: #eaeaea;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    font-weight: 700;
+    font-size: 30px;
+}
+
+.nav-options {
+    display: flex;
+    gap: 15px;
+}
