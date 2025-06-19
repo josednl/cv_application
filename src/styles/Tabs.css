@@ -1,0 +1,32 @@
+.tabs-container {
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.tabs-header {
+	display: flex;
+	border-bottom: 1px solid #ccc;
+}
+
+.tab-button {
+	padding: 10px 20px;
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-weight: bold;
+	color: #555;
+	border-bottom: 3px solid transparent;
+}
+
+.tab-button:hover {
+	background-color: #f9f9f9;
+}
+
+.tab-button.active {
+	color: #000;
+	border-bottom: 3px solid #007bff;
+}
+
+.tabs-content {
+	padding: 15px;
+}

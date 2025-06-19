@@ -1,4 +1,4 @@
-export default function Link({handleClick = '', text, icon = ''}) {
+export default function Link({ handleClick = () => {}, text, icon = '' }) {
     const linkStyles = {
         display: 'flex',
         alignItems: 'center',
@@ -10,8 +10,8 @@ export default function Link({handleClick = '', text, icon = ''}) {
     }
 
     return (
-        <a style={linkStyles} onclick={handleClick}>
-            {icon  && <img src={icon} alt={`${text} icon`} />} 
+        <a style={linkStyles} onClick={handleClick}>
+            {icon && <img src={icon} alt={`${text} icon`} />}
             {text}
         </a>
     )

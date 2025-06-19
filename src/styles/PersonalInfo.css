@@ -1,0 +1,10 @@
+.personal-info {
+    display: flex;
+	flex-direction: column;
+	gap: 25px;
+	align-items: flex-start;
+}
+
+.personal-info-form {
+    width: 100%;
+}
