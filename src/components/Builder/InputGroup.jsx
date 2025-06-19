@@ -1,6 +1,7 @@
-export default function Input({ label = '', type = 'text', textarea = false, id = '', icon = '', recommended = false, optional = false, required = false, placeholder = '', block = true, customStyles = {}, ...rest }) {
+export default function Input({ label = '', type = 'text', textarea = false, id = '', icon = '', recommended = false, optional = false, required = false, placeholder = '', block = true, alignment = 'left', customStyles = {}, ...rest }) {
+    
     const defaultInputStyles = {
-        width: (block ? '100%' : '50%'),
+        width: '100%',
         padding: '10px',
         backgroundColor: '#dadada75',
         border: '1px solid #cccccc',
@@ -47,8 +48,14 @@ export default function Input({ label = '', type = 'text', textarea = false, id 
         whiteSpace: 'nowrap',
     }
 
+    const inlineGroupStyles = {
+        display: (block ? 'block' : 'inline-block'),
+        width: (block ? '100%' : '48%'),
+        ...(alignment === 'right' && !block ? { float: 'right' } : {}),
+    }
+
     return(
-        <div className='input-group'>
+        <div className='input-group' style={inlineGroupStyles}>
             <div style={headerStyle}>
                 {icon && <img src={icon} alt={`${label} icon`} />} 
                 <label style={labelStyles} htmlFor={id}>{label}</label> 
