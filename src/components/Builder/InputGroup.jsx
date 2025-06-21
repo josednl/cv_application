@@ -1,5 +1,5 @@
-export default function Input({ label = '', type = 'text', textarea = false, id = '', icon = '', recommended = false, optional = false, required = false, placeholder = '', block = true, alignment = 'left', customStyles = {}, ...rest }) {
-    
+export default function Input({ label = '', type = 'text', textarea = false, name = '', id = '', icon = '', value = '', recommended = false, optional = false, required = false, placeholder = '', block = true, alignment = 'left', customStyles = {}, ...rest }) {
+
     const defaultInputStyles = {
         width: '100%',
         padding: '10px',
@@ -54,18 +54,18 @@ export default function Input({ label = '', type = 'text', textarea = false, id 
         ...(alignment === 'right' && !block ? { float: 'right' } : {}),
     }
 
-    return(
+    return (
         <div className='input-group' style={inlineGroupStyles}>
             <div style={headerStyle}>
-                {icon && <img src={icon} alt={`${label} icon`} />} 
-                <label style={labelStyles} htmlFor={id}>{label}</label> 
+                {icon && <img src={icon} alt={`${label} icon`} />}
+                <label style={labelStyles} htmlFor={id}>{label}</label>
                 {recommended && <span style={recommendedStyles}>recommended</span>}
                 {optional && <span style={optionalStyles}>optional</span>}
             </div>
             {textarea ? (
-                <textarea id={id} placeholder={placeholder} style={{...defaultInputStyles, ...defaultTextareaStyles, ...customStyles}} required={required} {...rest}></textarea>
+                <textarea id={id} name={name} value={value} style={{ ...defaultInputStyles, ...defaultTextareaStyles, ...customStyles }} required={required} placeholder={placeholder} {...rest}></textarea>
             ) : (
-                <input type={type} id={id} style={{...defaultInputStyles, ...customStyles}} required={required} placeholder={placeholder} {...rest} />
+                <input type={type} id={id} name={name} value={value} style={{ ...defaultInputStyles, ...customStyles }} required={required} placeholder={placeholder} {...rest} />
             )}
         </div>
     )

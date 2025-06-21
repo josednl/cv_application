@@ -1,23 +1,28 @@
 import './styles/App.css';
+import { useState } from 'react';
 import Menu from '@/components/Menu/Menu.jsx';
 import Tabs from '@/components/Builder/Tabs.jsx';
-import PersonalInfo from '@/components/Builder/PersonalInfo.jsx';
-import EducationalExperience from '@/components/Builder/EducationalExperience.jsx';
-import PracticalExperience from './components/Builder/PracticalExperience.jsx';
+import Resume from '@/components/Resume/Resume.jsx';
 
 function App() {
+	const [personalData, setPersonalData] = useState({
+		name: '',
+		email: '',
+		phone: '',
+		location: '',
+	});
 
-	const tabs = [
-		{ label: 'Personal Information', content: <PersonalInfo /> },
-		{ label: 'Education', content: <EducationalExperience /> },
-		{ label: 'Experience', content: <PracticalExperience /> },
-	];
+	function handleChange(e) {
+		const { name, value } = e.target;
+		setPersonalData(prevData => ({...prevData,[name]: value}));
+	}
 
 	return (
 		<>
 			<Menu />
 			<main>
-				<Tabs tabs={tabs}/>
+				<Tabs handleChange={handleChange} data={personalData} />
+				<Resume personalData={personalData} />
 			</main>
 		</>
 	)
