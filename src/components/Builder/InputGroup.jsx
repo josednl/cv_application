@@ -1,4 +1,4 @@
-export default function Input({ label = '', type = 'text', textarea = false, name = '', id = '', icon = '', value = '', recommended = false, optional = false, required = false, placeholder = '', block = true, alignment = 'left', customStyles = {}, ...rest }) {
+export default function Input({ label = '', type = 'text', textarea = false, name = '', id = '', icon = '', value = '', recommended = false, optional = false, required = false, placeholder = '', block = true, alignment = 'left', customStyles = {}, onChange = () => {}, ...rest }) {
 
     const defaultInputStyles = {
         width: '100%',
@@ -7,7 +7,6 @@ export default function Input({ label = '', type = 'text', textarea = false, nam
         border: '1px solid #cccccc',
         borderRadius: '8px',
         fontSize: '1rem',
-        marginBottom: '15px',
     }
 
     const labelStyles = {
@@ -63,9 +62,9 @@ export default function Input({ label = '', type = 'text', textarea = false, nam
                 {optional && <span style={optionalStyles}>optional</span>}
             </div>
             {textarea ? (
-                <textarea id={id} name={name} value={value} style={{ ...defaultInputStyles, ...defaultTextareaStyles, ...customStyles }} required={required} placeholder={placeholder} {...rest}></textarea>
+                <textarea id={id} name={name} value={value} style={{ ...defaultInputStyles, ...defaultTextareaStyles, ...customStyles }} required={required} placeholder={placeholder} onChange={onChange} {...rest}></textarea>
             ) : (
-                <input type={type} id={id} name={name} value={value} style={{ ...defaultInputStyles, ...customStyles }} required={required} placeholder={placeholder} {...rest} />
+                <input type={type} id={id} name={name} value={value} style={{ ...defaultInputStyles, ...customStyles }} required={required} placeholder={placeholder} onChange={onChange} {...rest} />
             )}
         </div>
     )

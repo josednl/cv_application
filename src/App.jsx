@@ -12,17 +12,31 @@ function App() {
 		location: '',
 	});
 
-	function handleChange(e) {
+	const [educationData, setEducationData] = useState([]);
+
+	function handleDataChange(e, stateSetter) {
 		const { name, value } = e.target;
-		setPersonalData(prevData => ({...prevData,[name]: value}));
+		stateSetter(prevData => ({...prevData,[name]: value}));
+	}
+
+	function handleDataSetChange(e, stateSetter, id) {
+		 const { name, value } = e.target;
+
+		stateSetter(prevData =>
+			prevData.map(item =>
+			item.id === id
+				? { ...item, [name]: value }
+				: item
+			)
+		);
 	}
 
 	return (
 		<>
 			<Menu />
 			<main>
-				<Tabs handleChange={handleChange} data={personalData} />
-				<Resume personalData={personalData} />
+				<Tabs handleDataChange={handleDataChange} handleDataSetChange={handleDataSetChange} personalData={personalData} personalDataSetter={setPersonalData} educationData={educationData} educationalDataSetter={setEducationData} />
+				<Resume personalData={personalData} educationData={educationData} />
 			</main>
 		</>
 	)

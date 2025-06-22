@@ -3,11 +3,10 @@ import MailIcon from '@/assets/mail.svg';
 import PhoneIcon from '@/assets/phone.svg';
 import LocationIcon from '@/assets/location.svg';
 
-
 export default function PersonalInfoSection({ personalData }) {
 
     return(
-        <div className="personal-info-container">
+        <section className="personal-info-container">
             <div className="main-box">
                 <p className="data-name">{personalData.name}</p>
             </div>
@@ -31,6 +30,6 @@ export default function PersonalInfoSection({ personalData }) {
                     </div>
                 )}
             </div>
-        </div>
+        </section>
     )
 } 

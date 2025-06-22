@@ -18,6 +18,7 @@ main {
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
+	margin-bottom: 15px;
 }
 
 .section-title img {
@@ -28,10 +29,12 @@ main {
 .section-content {
     display: flex;
 	flex-direction: column;
-	gap: 25px;
 	align-items: flex-start;
 }
 
 .section-content-form {
     width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
 }

@@ -1,9 +1,10 @@
 export default function Button({ text = '', handleClick = () => {}, type = 'primary' }) {
     const boxStyles = {
+        width: '100%',
         display: 'flex',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        padding: '10px',
+        padding: '10px 0',
     }
 
     const buttonStyles = {
