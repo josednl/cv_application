@@ -1,0 +1,21 @@
+.add-button-container {
+    padding: 10px 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.degree-item {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    border-bottom: 1px solid #a5a5a5;
+}
+
+.degree-options {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 0;
+}
