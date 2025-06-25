@@ -1,4 +1,4 @@
-export default function Input({ label = '', type = 'text', textarea = false, name = '', id = '', icon = '', value = '', recommended = false, optional = false, required = false, placeholder = '', block = true, alignment = 'left', customStyles = {}, onChange = () => {}, ...rest }) {
+export default function Input({ label = '', id = '', type = 'text', textarea = false, name = '', icon = '', value = '', recommended = false, optional = false, required = false, placeholder = '', customStyles = {}, onChange = () => {}, ...rest }) {
 
     const defaultInputStyles = {
         width: '100%',
@@ -48,9 +48,7 @@ export default function Input({ label = '', type = 'text', textarea = false, nam
     }
 
     const inlineGroupStyles = {
-        display: (block ? 'block' : 'inline-block'),
-        width: (block ? '100%' : '48%'),
-        ...(alignment === 'right' && !block ? { float: 'right' } : {}),
+        width: '100%',
     }
 
     return (
@@ -64,7 +62,7 @@ export default function Input({ label = '', type = 'text', textarea = false, nam
             {textarea ? (
                 <textarea id={id} name={name} value={value} style={{ ...defaultInputStyles, ...defaultTextareaStyles, ...customStyles }} required={required} placeholder={placeholder} onChange={onChange} {...rest}></textarea>
             ) : (
-                <input type={type} id={id} name={name} value={value} style={{ ...defaultInputStyles, ...customStyles }} required={required} placeholder={placeholder} onChange={onChange} {...rest} />
+                <input id={id} type={type} name={name} value={value} style={{ ...defaultInputStyles, ...customStyles }} required={required} placeholder={placeholder} onChange={onChange} {...rest} />
             )}
         </div>
     )

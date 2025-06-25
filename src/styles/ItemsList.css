@@ -6,16 +6,21 @@
     align-items: center;
 }
 
-.degree-item {
+.list-item {
     display: grid;
     grid-template-columns: 1fr 2fr;
     border-bottom: 1px solid #a5a5a5;
 }
 
-.degree-options {
+.list-options {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     gap: 5px;
     padding: 10px 0;
+}
+
+.item-title {
+    font-size: 18px;
+    font-weight: 600;
 }

@@ -13,6 +13,7 @@ function App() {
 	});
 
 	const [educationData, setEducationData] = useState([]);
+	const [practicalData, setPracticalData] = useState([]);
 
 	function handleDataChange(e, stateSetter) {
 		const { name, value } = e.target;
@@ -35,8 +36,8 @@ function App() {
 		<>
 			<Menu />
 			<main>
-				<Tabs handleDataChange={handleDataChange} handleDataSetChange={handleDataSetChange} personalData={personalData} personalDataSetter={setPersonalData} educationData={educationData} educationalDataSetter={setEducationData} />
-				<Resume personalData={personalData} educationData={educationData} />
+				<Tabs handleDataChange={handleDataChange} handleDataSetChange={handleDataSetChange} personalData={personalData} personalDataSetter={setPersonalData} educationData={educationData} educationalDataSetter={setEducationData} practicalDataSetter={setPracticalData} practicalData={practicalData} />
+				<Resume personalData={personalData} educationData={educationData} practicalData={practicalData} />
 			</main>
 		</>
 	)

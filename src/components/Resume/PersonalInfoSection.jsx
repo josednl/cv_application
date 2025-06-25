@@ -3,30 +3,30 @@ import MailIcon from '@/assets/mail.svg';
 import PhoneIcon from '@/assets/phone.svg';
 import LocationIcon from '@/assets/location.svg';
 
-export default function PersonalInfoSection({ personalData }) {
+export default function PersonalInfoSection({ data }) {
 
     return(
         <section className="personal-info-container">
             <div className="main-box">
-                <p className="data-name">{personalData.name}</p>
+                <p className="data-name">{data.name}</p>
             </div>
             <div className="info-box">
-                {personalData.email !== '' && (
+                {data.email !== '' && (
                     <div className='data-box'>
                         <img src={MailIcon} alt='Email icon' />
-                        <p className="data-email">{personalData.email}</p>
+                        <p className="data-email">{data.email}</p>
                     </div>
                 )}
-                {personalData.phone !== '' && (
+                {data.phone !== '' && (
                     <div className='data-box'>
                         <img src={PhoneIcon} alt='Phone icon' />
-                        <p className="data-phone">{personalData.phone}</p>
+                        <p className="data-phone">{data.phone}</p>
                     </div>
                 )}
-                {personalData.location !== '' && (
+                {data.location !== '' && (
                     <div className='data-box'>
                         <img src={LocationIcon} alt='Location icon' />
-                        <p className="data-location">{personalData.location}</p>
+                        <p className="data-location">{data.location}</p>
                     </div>
                 )}
             </div>

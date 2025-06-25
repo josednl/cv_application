@@ -1,22 +1,122 @@
+import { useState } from 'react';
+import Section from '@/components/Builder/Section.jsx';
+import Button from '@/components/Button.jsx';
 import Input from '@/components/Builder/InputGroup.jsx';
+import '@/styles/ItemsList.css';
 import WorkIcon from '@/assets/work.svg';
 
-export default function PracticalExperience() {
+export default function PracticalExperience({ setter, data }) {
+    const [editingId, setEditingId] = useState(null);
+    const [formData, setFormData] = useState({
+        company: '',
+        job: '',
+        startDate: '',
+        endDate: '',
+        location: '',
+        description: '',
+    });
+
+    function handleChange(e) {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    }
+
+    function handleClick() {
+        const newEntry = {
+            id: crypto.randomUUID(),
+            ...formData,
+        };
+
+        if (editingId) {
+            setter(prev =>
+                prev.map(item => (item.id === editingId ? newEntry : item))
+            );
+        } else {
+            setter(prev => [...prev, newEntry]);
+        }
+
+        setFormData({
+            company: '',
+            job: '',
+            startDate: '',
+            endDate: '',
+            location: '',
+            description: '',
+        });
+        setEditingId(null);
+    }
+
+    function handleModifyBtn(data) {
+        setFormData({
+            company: data.company,
+            job: data.job,
+            startDate: data.startDate,
+            endDate: data.endDate,
+            location: data.location,
+            description: data.description,
+        });
+        setEditingId(data.id);
+    }
+
+    function handleRemoveBtn(id) {
+        const confirmDelete = window.confirm('Are you sure you want to delete this entry?');
+        if (!confirmDelete) return;
+
+        setter(prev => prev.filter(item => item.id !== id));
+
+        setEditingId(prevId => (prevId === id ? null : prevId));
+        setFormData({
+            company: '',
+            job: '',
+            startDate: '',
+            endDate: '',
+            location: '',
+            description: '',
+        });
+    }
 
     return(
-        <div className='section-content'>
-            <div className='section-title'>
-                <img src={WorkIcon} alt='School icon' />
-                <h1>Practical Experience</h1>
+        <>
+            <div className='section-content'>
+                <div className='section-title'>
+                    <img src={WorkIcon} alt='School icon' />
+                    <h1>Practical Experience</h1>
+                </div>
+                <form className='section-content-form'>
+                    <Input id='company-name-input' name='company' label='Company Name' required={true} placeholder='Name of the company you worked for' value={formData.company} onChange={handleChange} />
+                    <Input id='job-title-input' name='job' label='Position Title' required={true} placeholder='Position or role you held at that company' value={formData.job} onChange={handleChange} />
+                    <div style={{display: 'flex', justifyContent: 'space-between', gap: '10px'}}>
+                        <Input id='job-start-input' name='startDate' label='Start Date' required={true} type='date' value={formData.startDate} onChange={handleChange} />
+                        <Input id='job-end-input' name='endDate' label='End Date' optional={true} type='date' value={formData.endDate} onChange={handleChange} />
+                    </div>
+                    <Input id='job-location-input' name='location' label='Location' optional={true} placeholder='Where is the headquarters you were going to?' value={formData.location} onChange={handleChange} />
+                    <Input id='job-desc-input' name='description' label='Description' textarea={true} recommended={true} optional={true} placeholder='Describe your main responsibilities of your jobs or achievements' value={formData.description} onChange={handleChange} /> 
+                </form>
+                <div className='add-button-container'>
+                    <Button text={editingId ? 'Update' : 'Add'} handleClick={handleClick}/>
+                </div>
             </div>
-            <form className='section-content-form'>
-                <Input label='Company Name' id={'company-name-' + crypto.randomUUID()} required={true} placeholder='Name of the company you worked for' />
-                <Input label='Position Title' id={'position-title-' + crypto.randomUUID()} required={true} placeholder='Position or role you held at that company' />
-                <Input label='Start Date' id={'job-start-' + crypto.randomUUID()} required={true} type='date' block={false} />
-                <Input label='End Date' id={'job-end-' + crypto.randomUUID()} optional={true} placeholder='Enter a date or `Present`' block={false} alignment='right' />
-                <Input label='Location' id={'job-location-' + crypto.randomUUID()} optional={true} placeholder='Where is the headquarters you were going to?' />
-                <Input label='Description' id={'job-desc-' + crypto.randomUUID()} textarea={true} recommended={true} optional={true} placeholder='Describe your main responsibilities of your jobs or achievements' /> 
-            </form>
-        </div>
+            <Section title='Jobs lists' contentStyle={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                {data.map((job) => (
+                    <div key={job.id}>
+                        <div className="list-item">
+                            <div>
+                                <p>{job.startDate} | {job.endDate === '' ? 'Present' : job.endDate}</p>
+                            </div>
+                            <div>
+                                <div>
+                                    <p className='item-title'>{job.company}</p>
+                                    <p>{job.job}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='list-options'>
+                            <Button text='Modify' type='warning' handleClick={() => {handleModifyBtn(job)}} size='small' />
+                            <Button text='Remove' type='danger' handleClick={() => handleRemoveBtn(job.id)} size='small' />
+                        </div>
+                    </div>
+                ))}
+            </Section> 
+        </>
     )
 }

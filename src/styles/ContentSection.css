@@ -1,8 +1,8 @@
-.education-info-container {
+.info-section-container {
     padding: 35px;
 }
 
-.education-title {
+.info-section-title {
     text-transform: capitalize;
     color: #333333;
     font-size: 20px;
@@ -12,32 +12,32 @@
     border-bottom: 2px solid #333333;
 }
 
-.degree-box {
+.content-box {
     display: grid;
     grid-template-columns: 1fr 4fr;
     gap: 15px;
     margin-bottom: 25px;
 }
 
-.degree-header {
+.content-header {
     display: flex;
     flex-direction: column;
     gap: 8px;
     font-size: 15px;
 }
 
-.degree-content {
+.content-body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     gap: 8px;
 }
 
-.degree-title {
+.content-title {
     font-weight: 600;
     font-size: 18px;
 }
 
-.degree-school {
+.content-inst {
     color: #333333;
 }
