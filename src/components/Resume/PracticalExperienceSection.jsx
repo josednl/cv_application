@@ -15,7 +15,7 @@ export default function PracticalExperienceSection({ data }) {
                 {data.map((job) => (
                     <div key={job.id} className="content-box">
                         <div className="content-header">
-                            <p>{job.startDate} | {job.endDate === '' ? 'Present' : job.endDate}</p>
+                            <p><span style={{whiteSpace: 'nowrap'}}>{job.startDate}</span> | <span style={{whiteSpace: 'nowrap'}}>{job.endDate === '' ? 'Present' : job.endDate}</span></p>
                             <p>{job.location}</p>
                         </div>
                         <div className="content-body">

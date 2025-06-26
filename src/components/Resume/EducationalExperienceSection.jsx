@@ -15,7 +15,7 @@ export default function EducationalExperienceSection({ data }) {
                 {data.map((degree) => (
                     <div key={degree.id} className="content-box">
                         <div className="content-header">
-                            <p>{degree.startDate} | {degree.endDate === '' ? 'Present' : degree.endDate}</p>
+                            <p><span style={{whiteSpace: 'nowrap'}}>{degree.startDate}</span> | <span style={{whiteSpace: 'nowrap'}}>{degree.endDate === '' ? 'Present' : degree.endDate}</span></p>
                             <p>{degree.location}</p>
                         </div>
                         <div className="content-body">

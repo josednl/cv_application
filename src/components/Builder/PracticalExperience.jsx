@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Section from '@/components/Builder/Section.jsx';
+import Accordion from '@/components/Builder/Accordion.jsx';
 import Button from '@/components/Button.jsx';
 import Input from '@/components/Builder/InputGroup.jsx';
 import '@/styles/ItemsList.css';
@@ -96,18 +96,16 @@ export default function PracticalExperience({ setter, data }) {
                     <Button text={editingId ? 'Update' : 'Add'} handleClick={handleClick}/>
                 </div>
             </div>
-            <Section title='Jobs lists' contentStyle={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <Accordion title='Jobs lists' contentStyle={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 {data.map((job) => (
                     <div key={job.id}>
                         <div className="list-item">
                             <div>
-                                <p>{job.startDate} | {job.endDate === '' ? 'Present' : job.endDate}</p>
+                                <p><span style={{whiteSpace: 'nowrap'}}>{job.startDate}</span> | <span style={{whiteSpace: 'nowrap'}}>{job.endDate === '' ? 'Present' : job.endDate}</span></p>
                             </div>
                             <div>
-                                <div>
-                                    <p className='item-title'>{job.company}</p>
-                                    <p>{job.job}</p>
-                                </div>
+                                <p className='item-title'>{job.company}</p>
+                                <p>{job.job}</p>
                             </div>
                         </div>
                         <div className='list-options'>
@@ -116,7 +114,7 @@ export default function PracticalExperience({ setter, data }) {
                         </div>
                     </div>
                 ))}
-            </Section> 
+            </Accordion> 
         </>
     )
 }

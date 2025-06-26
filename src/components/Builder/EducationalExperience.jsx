@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Input from '@/components/Builder/InputGroup.jsx';
-import Section from '@/components/Builder/Section.jsx';
+import Accordion from '@/components/Builder/Accordion.jsx';
 import '@/styles/ItemsList.css';
 import Button from '@/components/Button.jsx';
 import SchoolIcon from '@/assets/school.svg';
@@ -95,18 +95,16 @@ export default function EducationalExperience({ setter, data }) {
                     <Button text={editingId ? 'Update' : 'Add'} handleClick={handleClick}/>
                 </div>
             </div>
-            <Section title='Degrees lists' contentStyle={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <Accordion title='Degrees lists' contentStyle={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 {data.map((degree) => (
                     <div key={degree.id}>
                         <div className="list-item">
                             <div>
-                                <p>{degree.startDate} | {degree.endDate === '' ? 'Present' : degree.endDate}</p>
+                                <p><span style={{whiteSpace: 'nowrap'}}>{degree.startDate}</span> | <span style={{whiteSpace: 'nowrap'}}>{degree.endDate === '' ? 'Present' : degree.endDate}</span></p>
                             </div>
                             <div>
-                                <div>
-                                    <p className='item-title'>{degree.degree}</p>
-                                    <p>{degree.school}</p>
-                                </div>
+                                <p className='item-title'>{degree.degree}</p>
+                                <p>{degree.school}</p>
                             </div>
                         </div>
                         <div className='list-options'>
@@ -115,7 +113,7 @@ export default function EducationalExperience({ setter, data }) {
                         </div>
                     </div>
                 ))}
-            </Section>
+            </Accordion>
         </>
     )
 }
