@@ -1,3 +1,39 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto-VariableFont_wdth,wght.ttf') format('truetype');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Libertinus Math';
+    src: url('/fonts/LibertinusMath-Regular.ttf') format('truetype');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('/fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Atkinson Hyperlegible Next';
+    src: url('/fonts/AtkinsonHyperlegibleNext-VariableFont_wght.ttf') format('truetype');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('/fonts/OpenSans-VariableFont_wdth\,wght.ttf') format('truetype');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Playfair Display';
+    src: url('/fonts/PlayfairDisplay-VariableFont_wght.ttf') format('truetype');
+    font-style: normal;
+}
+
 * {
 	padding: 0;
 	margin: 0;
@@ -37,4 +73,66 @@ main {
 	display: flex;
 	flex-direction: column;
 	gap: 15px;
+}
+
+.roboto-font-family {
+	font-family: 'Roboto';
+}
+
+.montserrat-font-family {
+	font-family: 'Montserrat';
+}
+
+.atkinson-hyperlegible-next-font-family {
+	font-family: 'Atkinson Hyperlegible Next';
+}
+
+.libertinus-math-font-family {
+	font-family: 'Libertinus Math';
+}
+
+.open-sans-font-family {
+	font-family: 'Open Sans';
+}
+
+.playfair-display-font-family {
+	font-family: 'Playfair Display';
+}
+
+.display-options {
+	display: flex;
+	justify-content: flex-start;
+	gap: 10px;
+}
+
+.d-option {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 5px;
+	font-size: 14px;
+}
+
+.d-visual {
+	height: 50px;
+	width: 50px;
+	border: 1px solid #cccccc;
+	border-radius: 8px;
+	cursor: pointer;
+}
+
+.display-top {
+	background: linear-gradient(180deg, #0e374e 50%, #ffffff 50%);
+}
+
+.display-right {
+	background: linear-gradient(90deg, #ffffff 50%, #0e374e 50%);
+}
+
+.display-bottom {
+	background: linear-gradient(180deg, #ffffff 50%, #0e374e 50%);
+}
+
+.display-left {
+	background: linear-gradient(90deg, #0e374e 50%, #ffffff 50%);
 }

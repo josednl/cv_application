@@ -1,0 +1,50 @@
+.style-bar {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+.style-item {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.input-label {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+#color-picker::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+#color-picker::-webkit-color-swatch {
+    border: none;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+#color-picker {
+    height: 50px;
+    width: 50px;
+    border-radius: 10px;
+    border: none;
+}
+
+#text-font {
+    padding: 8px;
+    font-size: 12px;
+    width: 100%;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+}
+
+.selected {
+    border: 3px solid #000000;
+}
