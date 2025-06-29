@@ -4,6 +4,7 @@ import Menu from '@/components/Menu/Menu.jsx';
 import Tabs from '@/components/Builder/Tabs.jsx';
 import Resume from '@/components/Resume/Resume.jsx';
 import StyleBar from '@/components/Customize/StyleBar.jsx';
+import Preview from '@/components/Customize/Preview.jsx';
 
 function App() {
 	const [activeMenuIndex, setActiveMenuIndex] = useState(0);
@@ -18,9 +19,9 @@ function App() {
         alignment: 'top',
         font: 'roboto',
     });
-
 	const [educationData, setEducationData] = useState([]);
 	const [practicalData, setPracticalData] = useState([]);
+	const [temporalConfig, setTemporalConfig] = useState(config);
 
 	function handleDataChange(e, stateSetter) {
 		const { name, value } = e.target;
@@ -45,6 +46,7 @@ function App() {
 
 	function setStyleConfiguration (color, alignment, font) {
 		setConfig({...config, color: color, alignment: alignment, font: font});
+		window.alert('Saved style customization');
 	}
 
 	return (
@@ -54,11 +56,12 @@ function App() {
 				{activeMenuIndex === 0 ? (
 					<>
 						<Tabs handleDataChange={handleDataChange} handleDataSetChange={handleDataSetChange} personalData={personalData} personalDataSetter={setPersonalData} educationData={educationData} educationalDataSetter={setEducationData} practicalDataSetter={setPracticalData} practicalData={practicalData} />
-						<Resume personalData={personalData} educationData={educationData} practicalData={practicalData} />
+						<Resume personalData={personalData} educationData={educationData} practicalData={practicalData} styles={config} />
 					</>
 				) : (
 					<>
-						<StyleBar handleStyles={setStyleConfiguration} styles={config} />
+						<StyleBar handleStyles={setStyleConfiguration} styles={config} temporalConfig={setTemporalConfig} />
+						<Preview styles={temporalConfig} />
 					</>
 				)}
 

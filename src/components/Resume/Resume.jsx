@@ -1,14 +1,8 @@
-import PersonalInfoSection from '@/components/Resume/PersonalInfoSection.jsx';
-import EducationalExperienceSection from '@/components/Resume/EducationalExperienceSection.jsx';
-import PracticalExperienceSection from '@/components/Resume/PracticalExperienceSection.jsx';
+import ResumeLayout from '@/components/ResumeLayout.jsx';
 
-export default function Resume({ personalData, educationData, practicalData }) {
-
-	return (
-		<div style={{width: '100%', minHeight: '792px', border: '1px solid black'}}>
-            <PersonalInfoSection data={personalData}/>
-			<EducationalExperienceSection data={educationData} />
-			<PracticalExperienceSection data={practicalData} />
-		</div>
-	);
+export default function Resume({ personalData, educationData, practicalData, styles }) {
+    return (
+        <ResumeLayout personalData={personalData} educationData={educationData} practicalData={practicalData} styles={styles}
+        />
+    );
 }
