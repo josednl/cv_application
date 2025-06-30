@@ -97,8 +97,8 @@ export default function EducationalExperience({ setter, data }) {
             </div>
             <Accordion title='Degrees lists' contentStyle={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 {data.map((degree) => (
-                    <div key={degree.id}>
-                        <div className="list-item">
+                    <div key={degree.id} className='list-item'>
+                        <div className='list-item-content'>
                             <div>
                                 <p><span style={{whiteSpace: 'nowrap'}}>{degree.startDate}</span> | <span style={{whiteSpace: 'nowrap'}}>{degree.endDate === '' ? 'Present' : degree.endDate}</span></p>
                             </div>

@@ -18,28 +18,57 @@ export default function Preview({ styles = {} }) {
                 location: 'Urbana-Chanpaign, IL',
                 description: 'Focused on embedded systems, data structures, and systems programming. Participated in undergraduate research on machine learning applications in IoT.'
             },
-            // ...
+            {
+                id: crypto.randomUUID(),
+                school: 'Stanford University',
+                degree: 'Master of Science in Artificial Intelligence',
+                startDate: '15-9-2016',
+                endDate: '10-6-2018',
+                location: 'Stanford, CA',
+                description: 'Specialized in deep learning and natural language processing. Completed thesis on generative adversarial networks in medical image analysis.'
+            },
+            {
+                id: crypto.randomUUID(),
+                school: 'MIT xPro',
+                degree: 'Professional Certificate in Data Engineering',
+                startDate: '5-1-2020',
+                endDate: '30-6-2020',
+                location: 'Online',
+                description: 'Completed a six-month intensive program covering big data pipelines, cloud technologies, and real-time data processing using Apache Spark and Kafka.'
+            },
         ],
         practicalData: [
             {
                 id: crypto.randomUUID(),
                 company: 'Deloitte Consulting LLP',
                 job: 'Senior Data Analyst',
-                startDate: '-10-7-2020',
+                startDate: '10-7-2020',
                 endDate: '',
                 location: 'Chicago, IL (Hybrid)',
-                description: 'Leads data-driven consulting projects...'
+                description: 'Leads data-driven consulting projects.'
             },
-            // ...
+            {
+                id: crypto.randomUUID(),
+                company: 'Capital One',
+                job: 'Data Analyst',
+                startDate: '3-3-2018',
+                endDate: '30-6-2020',
+                location: 'McLean, VA',
+                description: 'Developed dashboards and models to optimize credit risk decisions and marketing campaigns. Automated reporting processes to reduce manual work by 40%.'
+            },
+            {
+                id: crypto.randomUUID(),
+                company: 'Intel Corporation',
+                job: 'Data Science Intern',
+                startDate: '1-6-2017',
+                endDate: '31-8-2017',
+                location: 'Santa Clara, CA',
+                description: 'Built predictive models to forecast chip performance variability. Collaborated with hardware teams to integrate data insights into development cycles.'
+            },
         ]
     };
 
     return (
-        <ResumeLayout
-            personalData={exampleData.personalData}
-            educationData={exampleData.educationData}
-            practicalData={exampleData.practicalData}
-            styles={styles}
-        />
+        <ResumeLayout personalData={exampleData.personalData} educationData={exampleData.educationData} practicalData={exampleData.practicalData} styles={styles} />
     );
 }

@@ -98,8 +98,8 @@ export default function PracticalExperience({ setter, data }) {
             </div>
             <Accordion title='Jobs lists' contentStyle={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 {data.map((job) => (
-                    <div key={job.id}>
-                        <div className="list-item">
+                    <div key={job.id} className='list-item'>
+                        <div className="list-item-content">
                             <div>
                                 <p><span style={{whiteSpace: 'nowrap'}}>{job.startDate}</span> | <span style={{whiteSpace: 'nowrap'}}>{job.endDate === '' ? 'Present' : job.endDate}</span></p>
                             </div>

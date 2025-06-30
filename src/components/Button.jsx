@@ -1,4 +1,4 @@
-export default function Button({ text = '', handleClick = () => {}, type = 'primary', size = 'mid' }) {
+export default function Button({ text = '', handleClick = () => {}, type = 'primary', size = 'mid', icon = '' }) {
     const buttonStyles = {
         backgroundColor: (type === 'primary' ? '#007bff' : type === 'warning' ? '#ffc107' : type === 'danger' ? '#dc3545' : type === 'success' ? '#28a745' : '#007bff'),
         color: (type === 'warning' ? '#000000' : '#ffffff'),
@@ -9,9 +9,13 @@ export default function Button({ text = '', handleClick = () => {}, type = 'prim
         fontSize: (size === 'mid' ? '1rem' : size === 'small' ? '11px' : '1rem'),
         lineHeight: '1.5',
         cursor: 'pointer',
+        ...(icon !== '' 
+            ? {display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '5px'}
+            : {}
+        )
     }
 
     return (
-        <button type="button" style={buttonStyles} onClick={handleClick}>{text}</button>
+        <button type="button" style={buttonStyles} onClick={handleClick}>{icon !== '' ? (<img src={icon} />) : ''} {text}</button>
     )
 }

@@ -2,11 +2,9 @@ import PersonalInfoSection from '@/components/Resume/PersonalInfoSection.jsx';
 import EducationalExperienceSection from '@/components/Resume/EducationalExperienceSection.jsx';
 import PracticalExperienceSection from '@/components/Resume/PracticalExperienceSection.jsx';
 
-export default function ResumeLayout({ personalData, educationData, practicalData, styles = {} }) {
+export default function ResumeLayout({ personalData, educationData, practicalData, styles = {}, sectionRefs = {} }) {
     const layoutStyles = {
         width: '100%',
-        minHeight: '792px',
-        border: '1px solid #000000',
         display: 'grid',
         ...(styles.alignment === 'top'
             ? { gridTemplateRows: '1fr 5fr' }
@@ -22,10 +20,10 @@ export default function ResumeLayout({ personalData, educationData, practicalDat
 
     return (
         <div style={layoutStyles} className={`${styles.font}-font-family`}>
-            <PersonalInfoSection data={personalData} styles={styles} />
+            <PersonalInfoSection ref={sectionRefs.personal} data={personalData} styles={styles} />
             <div>
-                <EducationalExperienceSection data={educationData} />
-                <PracticalExperienceSection data={practicalData} />
+                <EducationalExperienceSection ref={sectionRefs.education} data={educationData} />
+                <PracticalExperienceSection ref={sectionRefs.experience} data={practicalData} />
             </div>
         </div>
     );

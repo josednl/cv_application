@@ -1,13 +1,14 @@
+import React, { forwardRef } from 'react';
 import '@/styles/PersonalInfoSection.css';
 import MailIcon from '@/assets/mail.svg';
 import PhoneIcon from '@/assets/phone.svg';
 import LocationIcon from '@/assets/location.svg';
 
-export default function PersonalInfoSection({ data, styles = {} }) {
+const PersonalInfoSection = forwardRef(({ data, styles = {} }, ref) => {
     const parentStyles = {
         backgroundColor: styles.color,
         ...(styles.alignment === 'top'
-            ? { gridRows: '1 / 2' }
+            ? { gridRow: '1 / 2' }
             : styles.alignment === 'right'
             ? { gridColumn: '2 / 3', gridRow: '1'}
             : styles.alignment === 'bottom'
@@ -25,7 +26,7 @@ export default function PersonalInfoSection({ data, styles = {} }) {
     }
     
     return(
-        <section className='personal-info-container' style={parentStyles}>
+        <section ref={ref} className='personal-info-container' style={parentStyles}>
             <div className='main-box'>
                 <p className='data-name'>{data.name}</p>
             </div>
@@ -51,4 +52,6 @@ export default function PersonalInfoSection({ data, styles = {} }) {
             </div>
         </section>
     )
-}
+});
+
+export default PersonalInfoSection;
