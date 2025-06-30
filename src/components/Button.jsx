@@ -1,6 +1,6 @@
 export default function Button({ text = '', handleClick = () => {}, type = 'primary', size = 'mid', icon = '' }) {
     const buttonStyles = {
-        backgroundColor: (type === 'primary' ? '#007bff' : type === 'warning' ? '#ffc107' : type === 'danger' ? '#dc3545' : type === 'success' ? '#28a745' : '#007bff'),
+        backgroundColor: (type === 'primary' ? '#007bff' : type === 'warning' ? '#ffc107' : type === 'danger' ? '#dc3545' : type === 'success' ? '#28a745' : type === 'secondary' ? '#6c757d' : '#007bff'),
         color: (type === 'warning' ? '#000000' : '#ffffff'),
         border: 'none',
         borderRadius: '.25rem',

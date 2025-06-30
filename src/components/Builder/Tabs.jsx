@@ -4,12 +4,12 @@ import PersonalInfo from '@/components/Builder/PersonalInfo.jsx';
 import EducationalExperience from '@/components/Builder/EducationalExperience.jsx';
 import PracticalExperience from '@/components/Builder/PracticalExperience.jsx';
 
-export default function Tabs({ handleDataChange, personalData, personalDataSetter, educationData, educationalDataSetter, practicalData, practicalDataSetter }) {
+export default function Tabs({ handleDataChange, handleArrayDataChange, personalData, personalDataSetter, educationData, educationalDataSetter, practicalData, practicalDataSetter }) {
 	const [activeIndex, setActiveIndex] = useState(0);
 	const tabs = [
 		{ label: 'Personal Information', content: <PersonalInfo handleDataChange={(e) => handleDataChange(e, personalDataSetter)} data={personalData} /> },
-		{ label: 'Education', content: <EducationalExperience setter={educationalDataSetter} data={educationData} /> },
-		{ label: 'Experience', content: <PracticalExperience setter={practicalDataSetter} data={practicalData} /> },
+		{ label: 'Education', content: <EducationalExperience handleArrayDataChange={handleArrayDataChange} setter={educationalDataSetter} data={educationData} /> },
+		{ label: 'Experience', content: <PracticalExperience handleArrayDataChange={handleArrayDataChange} setter={practicalDataSetter} data={practicalData} /> },
 	];
 
 	return (

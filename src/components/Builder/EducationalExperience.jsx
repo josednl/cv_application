@@ -5,7 +5,7 @@ import '@/styles/ItemsList.css';
 import Button from '@/components/Button.jsx';
 import SchoolIcon from '@/assets/school.svg';
 
-export default function EducationalExperience({ setter, data }) {
+export default function EducationalExperience({  handleArrayDataChange, setter, data }) {
     const [editingId, setEditingId] = useState(null);
     const [formData, setFormData] = useState({
         school: '',
@@ -28,11 +28,11 @@ export default function EducationalExperience({ setter, data }) {
         };
 
         if (editingId) {
-            setter(prev =>
-                prev.map(item => (item.id === editingId ? newEntry : item))
-            );
+            const updatedData = data.map(item => (item.id === editingId ? newEntry : item));
+            handleArrayDataChange(updatedData, setter);
         } else {
-            setter(prev => [...prev, newEntry]);
+            const newData = [...data, newEntry];
+            handleArrayDataChange(newData, setter);
         }
 
         setFormData({
@@ -62,7 +62,8 @@ export default function EducationalExperience({ setter, data }) {
         const confirmDelete = window.confirm('Are you sure you want to delete this entry?');
         if (!confirmDelete) return;
 
-        setter(prev => prev.filter(item => item.id !== id));
+        const newData = data.filter(item => item.id !== id);
+        handleArrayDataChange(newData, setter);
 
         setEditingId(prevId => (prevId === id ? null : prevId));
         setFormData({
@@ -75,6 +76,17 @@ export default function EducationalExperience({ setter, data }) {
         });
     }
 
+    function handleCancel() {
+        setFormData({
+            school: '',
+            degree: '',
+            startDate: '',
+            endDate: '',
+            location: '',
+            description: '',
+        });
+        setEditingId(null);
+    }
 
     return(
         <>
@@ -92,7 +104,14 @@ export default function EducationalExperience({ setter, data }) {
                     <Input id='degree-desc-input' label='Description' name='description' textarea={true} placeholder='Describe your studies or achievements' optional={true} value={formData.description} onChange={handleChange} /> 
                 </form>
                 <div className='add-button-container'>
-                    <Button text={editingId ? 'Update' : 'Add'} handleClick={handleClick}/>
+                    {editingId ? (
+                        <>
+                            <Button text='Update' handleClick={handleClick} />
+                            <Button text='Cancel' type='secondary' handleClick={handleCancel} />
+                        </>
+                    ) : (
+                        <Button text='Add' handleClick={handleClick} />
+                    )}
                 </div>
             </div>
             <Accordion title='Degrees lists' contentStyle={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>

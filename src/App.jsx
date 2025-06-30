@@ -1,14 +1,14 @@
 import './styles/App.css';
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import Menu from '@/components/Menu/Menu.jsx';
 import Tabs from '@/components/Builder/Tabs.jsx';
 import Resume from '@/components/Resume/Resume.jsx';
 import StyleBar from '@/components/Customize/StyleBar.jsx';
 import Preview from '@/components/Customize/Preview.jsx';
 import Button from '@/components/Button.jsx';
+import PDFDocument from '@/components/PDFDocument.jsx';
 import DownloadIcon from '@/assets/download.svg';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 
 function App() {
 	const [activeMenuIndex, setActiveMenuIndex] = useState(0);
@@ -26,24 +26,31 @@ function App() {
 	const [educationData, setEducationData] = useState([]);
 	const [practicalData, setPracticalData] = useState([]);
 	const [temporalConfig, setTemporalConfig] = useState(config);
+	const [pdfError, setPdfError] = useState(null);
+	const [pdfKey, setPdfKey] = useState(0);
+	const [isDataChanging, setIsDataChanging] = useState(false); 
 	const contentRef = useRef();
 
 	function handleDataChange(e, stateSetter) {
 		const { name, value } = e.target;
+		setIsDataChanging(true);
 		stateSetter(prevData => ({...prevData,[name]: value}));
+		
+		setTimeout(() => {
+			setPdfKey(prev => prev + 1);
+			setIsDataChanging(false);
+		}, 100);
 	}
 
-	function handleDataSetChange(e, stateSetter, id) {
-		 const { name, value } = e.target;
-
-		stateSetter(prevData =>
-			prevData.map(item =>
-			item.id === id
-				? { ...item, [name]: value }
-				: item
-			)
-		);
-	}
+	const handleArrayDataChange = useCallback((newData, setter) => {
+		setIsDataChanging(true);
+		setter(newData);
+		
+		setTimeout(() => {
+			setPdfKey(prev => prev + 1);
+			setIsDataChanging(false);
+		}, 300);
+	}, []);
 
 	function setMenuIndex(index) {
 		setActiveMenuIndex(index);
@@ -60,117 +67,138 @@ function App() {
   		experience: useRef()
 	};
 
-	const handleDownloadPDF = async () => {
-		const orientation = (config.alignment === 'left' || config.alignment === 'right') ? 'landscape' : 'portrait';
-		const pdf = new jsPDF(orientation, 'mm', 'a4');
-		const pdfWidth = pdf.internal.pageSize.getWidth();
-		const pdfHeight = pdf.internal.pageSize.getHeight();
-
-		const originalWidth = contentRef.current.style.width;
-		const isHorizontalLayout = config.alignment === 'left' || config.alignment === 'right';
-		
-		if (isHorizontalLayout) {
-			contentRef.current.style.width = '297mm';
-		} else {
-			contentRef.current.style.width = '210mm';
-		}
-		contentRef.current.offsetHeight;
-
-		const contentBoxes = contentRef.current.querySelectorAll('.content-box');
-		const contentBoxPositions = Array.from(contentBoxes).map(box => {
-			const rect = box.getBoundingClientRect();
-			const containerRect = contentRef.current.getBoundingClientRect();
-			return {
-				top: rect.top - containerRect.top,
-				bottom: rect.bottom - containerRect.top,
-				height: rect.height
-			};
-		});
-
-		const canvas = await html2canvas(contentRef.current, { 
-			scale: isHorizontalLayout ? 1.2 : 2,
-			useCORS: true,
-			allowTaint: true,
-			backgroundColor: '#ffffff',
-			width: contentRef.current.scrollWidth,
-			height: contentRef.current.scrollHeight
-		});
-
-		contentRef.current.style.width = originalWidth;
-		
-		const imgData = canvas.toDataURL('image/png');
-		const imgWidth = pdfWidth;
-		const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-
-		if (imgHeight <= pdfHeight) {
-			pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-		} else {
-			let currentY = 0;
-			let pageNumber = 0;
-			const pixelsPerMM = canvas.height / (contentRef.current.scrollHeight / 3.7795275591);
-			const maxPageHeightInPixels = (pdfHeight * pixelsPerMM);
-
-			while (currentY < canvas.height) {
-				let nextY = Math.min(currentY + maxPageHeightInPixels, canvas.height);
-				
-				if (nextY < canvas.height) {
-					let bestCutPoint = nextY;
-					let minDistance = Infinity;
-
-					for (const box of contentBoxPositions) {
-						const boxTopInPixels = (box.top / contentRef.current.scrollHeight) * canvas.height;
-						const boxBottomInPixels = (box.bottom / contentRef.current.scrollHeight) * canvas.height;
-						
-						if (boxTopInPixels < nextY && boxBottomInPixels > nextY) {
-							if (boxTopInPixels > currentY) {
-								const distance = nextY - boxTopInPixels;
-								if (distance < minDistance && distance >= 0) {
-									minDistance = distance;
-									bestCutPoint = boxTopInPixels;
-								}
-							}
-
-							if (boxBottomInPixels - currentY <= maxPageHeightInPixels * 1.1) {
-								const distance = boxBottomInPixels - nextY;
-								if (distance < minDistance) {
-									minDistance = distance;
-									bestCutPoint = boxBottomInPixels;
-								}
-							}
-						}
-					}
-
-					nextY = bestCutPoint;
-				}
-
-				const pageHeight = nextY - currentY;
-				const tempCanvas = document.createElement('canvas');
-				const tempCtx = tempCanvas.getContext('2d');
-				tempCanvas.width = canvas.width;
-				tempCanvas.height = pageHeight;
-				
-				tempCtx.drawImage(
-					canvas, 
-					0, currentY, canvas.width, pageHeight,
-					0, 0, canvas.width, pageHeight
-				);
-				
-				const tempImgData = tempCanvas.toDataURL('image/png');
-				const tempImgHeight = (pageHeight * pdfWidth) / canvas.width;
-				
-				if (pageNumber > 0) {
-					pdf.addPage();
-				}
-				
-				pdf.addImage(tempImgData, 'PNG', 0, 0, pdfWidth, tempImgHeight);
-				
-				currentY = nextY;
-				pageNumber++;
-			}
-		}
-
-		pdf.save('resume.pdf');
+	const canGeneratePDF = () => {
+		return personalData.name.trim() !== '' && (educationData.length > 0 || practicalData.length > 0);
 	};
+
+	const handlePDFError = useCallback((error) => {
+		console.error('PDF Error:', error);
+		setPdfError(error.message || 'Error generating PDF');
+	}, []);
+
+	function loadData () {
+		const confirmed = window.confirm('Are you sure you want to upload this data? This will overwrite all current information.');
+
+    	if (!confirmed) return;
+
+		setPdfError(null);
+
+		setPersonalData({
+			name: '',
+			email: '',
+			phone: '',
+			location: '',
+		});
+		setEducationData([]);
+		setPracticalData([]);
+
+		setPdfKey(prev => prev + 1);
+
+		setTimeout(() => {
+			setPersonalData({
+				name: 'Michael Anthony Reynolds',
+				email: 'michael.reynolds87@example.com',
+				phone: '+1 (312) 555-8432',
+				location: 'Chicago, IL, USA'
+			});
+			
+			setEducationData([
+				{
+					id: crypto.randomUUID(),
+					school: 'University of Illinois at Urbana-Chanpaign',
+					degree: 'Bachelor of Science in Computer Engineering',
+					startDate: '1-8-2012',
+					endDate: '28-5-2016',
+					location: 'Urbana-Chanpaign, IL',
+					description: 'Focused on embedded systems, data structures, and systems programming. Participated in undergraduate research on machine learning applications in IoT.'
+				},
+				{
+					id: crypto.randomUUID(),
+					school: 'Stanford University',
+					degree: 'Master of Science in Artificial Intelligence',
+					startDate: '15-9-2016',
+					endDate: '10-6-2018',
+					location: 'Stanford, CA',
+					description: 'Specialized in deep learning and natural language processing. Completed thesis on generative adversarial networks in medical image analysis.'
+				},
+				{
+					id: crypto.randomUUID(),
+					school: 'MIT xPro',
+					degree: 'Professional Certificate in Data Engineering',
+					startDate: '5-1-2020',
+					endDate: '30-6-2020',
+					location: 'Online',
+					description: 'Completed a six-month intensive program covering big data pipelines, cloud technologies, and real-time data processing using Apache Spark and Kafka.'
+				},
+			]);
+			
+			setPracticalData([
+				{
+					id: crypto.randomUUID(),
+					company: 'Deloitte Consulting LLP',
+					job: 'Senior Data Analyst',
+					startDate: '10-7-2020',
+					endDate: '',
+					location: 'Chicago, IL (Hybrid)',
+					description: 'Leads data-driven consulting projects.'
+				},
+				{
+					id: crypto.randomUUID(),
+					company: 'Capital One',
+					job: 'Data Analyst',
+					startDate: '3-3-2018',
+					endDate: '30-6-2020',
+					location: 'McLean, VA',
+					description: 'Developed dashboards and models to optimize credit risk decisions and marketing campaigns. Automated reporting processes to reduce manual work by 40%.'
+				},
+				{
+					id: crypto.randomUUID(),
+					company: 'Intel Corporation',
+					job: 'Data Science Intern',
+					startDate: '1-6-2017',
+					endDate: '31-8-2017',
+					location: 'Santa Clara, CA',
+					description: 'Built predictive models to forecast chip performance variability. Collaborated with hardware teams to integrate data insights into development cycles.'
+				},
+			]);
+		}, 100);
+    }
+
+	function cleanData() {
+		const confirmed = window.confirm('Are you sure you want to delete all data?');
+
+    	if (!confirmed) return;
+
+		setPdfError(null);
+
+		setPersonalData({
+			name: '',
+			email: '',
+			phone: '',
+			location: '',
+		});
+		setEducationData([]);
+		setPracticalData([]);
+	}
+
+	const createPDFDocument = useCallback(() => {
+		if (isDataChanging) return null;
+		try {
+			return (
+				<PDFDocument 
+					key={pdfKey}
+					personalData={personalData}
+					educationData={educationData}
+					practicalData={practicalData}
+					config={config}
+				/>
+			);
+		} catch (error) {
+			console.error('Error creating PDF document:', error);
+			handlePDFError(error);
+			return null;
+		}
+	}, [personalData, educationData, practicalData, config, pdfKey, isDataChanging, handlePDFError]);
 
 	return (
 		<>
@@ -179,13 +207,59 @@ function App() {
 				{activeMenuIndex === 0 ? (
 					<>
 						<div>
-							<Tabs handleDataChange={handleDataChange} handleDataSetChange={handleDataSetChange} personalData={personalData} personalDataSetter={setPersonalData} educationData={educationData} educationalDataSetter={setEducationData} practicalDataSetter={setPracticalData} practicalData={practicalData} />
-							<div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', margin: '15px 0px'}}>
-								<Button type='danger' text='Download as PDF' icon={DownloadIcon} handleClick={handleDownloadPDF} />
+							<Tabs 
+								handleDataChange={handleDataChange} 
+								handleArrayDataChange={handleArrayDataChange}
+								personalData={personalData} 
+								personalDataSetter={setPersonalData} 
+								educationData={educationData} 
+								educationalDataSetter={setEducationData} 
+								practicalDataSetter={setPracticalData} 
+								practicalData={practicalData} 
+							/>
+							<div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', margin: '15px 0px', gap: '10px'}}>
+								{canGeneratePDF() && !isDataChanging && (
+									
+									<PDFDownloadLink
+										key={`pdf-download-${pdfKey}`}
+										document={createPDFDocument()}
+										fileName='resume.pdf'
+										onError={handlePDFError}
+									>
+										{({ loading, error }) => (
+											<Button 
+												type='danger' 
+												text={loading ? 'Generating PDF...' : error ? 'PDF Error' : 'Download PDF'} 
+												icon={DownloadIcon}
+											/>
+										)}
+									</PDFDownloadLink>
+								)}
+								<Button text='Load Example Data' handleClick={loadData} />
+								<Button text='Clean' type='success' handleClick={cleanData} />
 							</div>
+							
+							{pdfError && (
+								<div style={{
+									backgroundColor: '#ffebee',
+									color: '#c62828',
+									padding: '10px',
+									borderRadius: '4px',
+									margin: '10px 0',
+									border: '1px solid #ef5350'
+								}}>
+									Error: {pdfError}
+								</div>
+							)}
 						</div>
 						<div ref={contentRef}>
-							<Resume personalData={personalData} educationData={educationData} practicalData={practicalData} styles={config} sectionRefs={sectionRefs} />
+							<Resume 
+								personalData={personalData} 
+								educationData={educationData} 
+								practicalData={practicalData} 
+								styles={config} 
+								sectionRefs={sectionRefs} 
+							/>
 						</div>
 					</>
 				) : (
@@ -194,7 +268,6 @@ function App() {
 						<Preview styles={temporalConfig} />
 					</>
 				)}
-
 			</main>
 		</>
 	)

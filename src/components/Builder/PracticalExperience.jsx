@@ -5,7 +5,7 @@ import Input from '@/components/Builder/InputGroup.jsx';
 import '@/styles/ItemsList.css';
 import WorkIcon from '@/assets/work.svg';
 
-export default function PracticalExperience({ setter, data }) {
+export default function PracticalExperience({ handleArrayDataChange, setter, data }) {
     const [editingId, setEditingId] = useState(null);
     const [formData, setFormData] = useState({
         company: '',
@@ -28,11 +28,11 @@ export default function PracticalExperience({ setter, data }) {
         };
 
         if (editingId) {
-            setter(prev =>
-                prev.map(item => (item.id === editingId ? newEntry : item))
-            );
+            const updatedData = data.map(item => (item.id === editingId ? newEntry : item));
+            handleArrayDataChange(updatedData, setter);
         } else {
-            setter(prev => [...prev, newEntry]);
+            const newData = [...data, newEntry];
+            handleArrayDataChange(newData, setter);
         }
 
         setFormData({
@@ -62,7 +62,8 @@ export default function PracticalExperience({ setter, data }) {
         const confirmDelete = window.confirm('Are you sure you want to delete this entry?');
         if (!confirmDelete) return;
 
-        setter(prev => prev.filter(item => item.id !== id));
+        const newData = data.filter(item => item.id !== id);
+        handleArrayDataChange(newData, setter);
 
         setEditingId(prevId => (prevId === id ? null : prevId));
         setFormData({
@@ -73,6 +74,18 @@ export default function PracticalExperience({ setter, data }) {
             location: '',
             description: '',
         });
+    }
+
+    function handleCancel() {
+        setFormData({
+            school: '',
+            degree: '',
+            startDate: '',
+            endDate: '',
+            location: '',
+            description: '',
+        });
+        setEditingId(null);
     }
 
     return(
@@ -93,7 +106,14 @@ export default function PracticalExperience({ setter, data }) {
                     <Input id='job-desc-input' name='description' label='Description' textarea={true} recommended={true} optional={true} placeholder='Describe your main responsibilities of your jobs or achievements' value={formData.description} onChange={handleChange} /> 
                 </form>
                 <div className='add-button-container'>
-                    <Button text={editingId ? 'Update' : 'Add'} handleClick={handleClick}/>
+                    {editingId ? (
+                        <>
+                            <Button text='Update' handleClick={handleClick} />
+                            <Button text='Cancel' type='secondary' handleClick={handleCancel} />
+                        </>
+                    ) : (
+                        <Button text='Add' handleClick={handleClick} />
+                    )}
                 </div>
             </div>
             <Accordion title='Jobs lists' contentStyle={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
