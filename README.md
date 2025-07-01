@@ -64,3 +64,7 @@ Navigate to `http://localhost:5173` to view the application
 ```bash
 npm run build
 ```
+
+## Live Demo
+
+[View the live demo here](https://cvbuilder-by-josednl.netlify.app/) or copy and paste this link: `https://cvbuilder-by-josednl.netlify.app/`
