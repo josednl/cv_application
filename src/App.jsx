@@ -21,6 +21,7 @@ function App() {
 	});
 	const [config, setConfig] = useState({
         color: '#eaeaea',
+		textColor: '#000000',
         alignment: 'top',
         font: 'roboto',
     });
@@ -66,8 +67,8 @@ function App() {
 		setActiveMenuIndex(index);
 	}
 
-	function setStyleConfiguration (color, alignment, font) {
-		setConfig({...config, color: color, alignment: alignment, font: font});
+	function setStyleConfiguration (color, textColor, alignment, font) {
+		setConfig({...config, color: color, textColor: textColor, alignment: alignment, font: font});
 		window.alert('The style customization was saved');
 	}
 

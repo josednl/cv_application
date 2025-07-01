@@ -26,14 +26,14 @@ const PersonalInfoSection = forwardRef(({ data, styles = {} }, ref) => {
 	return (
 		<section ref={ref} className='personal-info-container' style={parentStyles}>
 			<div className='main-box'>
-				<p className='data-name'>{data.name}</p>
+				<p className='data-name' style={{ color: styles.textColor }}>{data.name}</p>
 			</div>
 			<div className='info-box' style={childStyles}>
 				{iconMap.map(({ key, icon, className }) => (
 					data[key] && (
 						<div className='data-box' key={key}>
 							<img src={icon} alt={`${key} icon`} />
-							<p className={className}>{data[key]}</p>
+							<p className={className} style={{ color: styles.textColor }}>{data[key]}</p>
 						</div>
 					)
 				))}

@@ -29,18 +29,30 @@ export default function StyleBar({ handleStyles, styles, temporalConfig }) {
 	}, [temporalConfig]);
 
 	const saveStyles = useCallback(() => {
-		handleStyles(temporalStyles.color, temporalStyles.alignment, temporalStyles.font);
+		handleStyles(temporalStyles.color, temporalStyles.textColor, temporalStyles.alignment, temporalStyles.font);
 	}, [handleStyles, temporalStyles]);
 
 	return (
 		<div className='style-bar'>
 			<div className='style-item'>
-				<label htmlFor='color-picker' className='input-label'>Accent Color</label>
+				<label htmlFor='background-color-picker' className='input-label'>Background Color</label>
 				<input
-					id='color-picker'
+					id='background-color-picker'
+					className='color-picker'
 					type='color'
 					value={temporalStyles.color}
 					onChange={(e) => handleChange('color', e.target.value)}
+				/>
+			</div>
+
+			<div className='style-item'>
+				<label htmlFor='text-color-picker' className='input-label'>Text Color</label>
+				<input
+					id='text-color-picker'
+					className='color-picker'
+					type='color'
+					value={temporalStyles.textColor}
+					onChange={(e) => handleChange('textColor', e.target.value)}
 				/>
 			</div>
 
