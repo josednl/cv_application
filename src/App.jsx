@@ -181,7 +181,7 @@ function App() {
 						</div>
 					)}
 				</div>
-				<div ref={contentRef}>
+				<div style={{ overflowX: 'scroll' }} ref={contentRef}>
 					<Resume 
 						personalData={personalData} 
 						educationData={educationData} 
