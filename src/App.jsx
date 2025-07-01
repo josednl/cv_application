@@ -158,7 +158,7 @@ function App() {
 							</PDFDownloadLink>
 						)}
 						<Button 
-							text='Load Example Data' 
+							text='Load Sample Data' 
 							handleClick={loadData} 
 						/>
 						<Button 
