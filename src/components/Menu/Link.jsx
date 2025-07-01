@@ -1,18 +1,21 @@
-export default function Link({ handleClick = () => {}, text, icon = '' }) {
-    const linkStyles = {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '3px',
-        color: '#424242',
-        textDecoration: 'underline #424242',
-        padding: '5px',
-        cursor: 'pointer',
-    }
+const linkStyles = {
+	display: 'flex',
+	alignItems: 'center',
+	gap: '3px',
+	color: '#424242',
+	textDecoration: 'underline',
+	padding: '5px',
+	cursor: 'pointer',
+	background: 'none',
+	border: 'none',
+	font: 'inherit',
+};
 
-    return (
-        <a style={linkStyles} onClick={handleClick}>
-            {icon && <img src={icon} alt={`${text} icon`} />}
-            {text}
-        </a>
-    )
+export default function Link({ handleClick = () => {}, text, icon = '' }) {
+	return (
+		<button style={linkStyles} onClick={handleClick}>
+			{icon && <img src={icon} alt={`${text} icon`} />}
+			{text}
+		</button>
+	);
 }

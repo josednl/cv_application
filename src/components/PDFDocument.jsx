@@ -237,7 +237,6 @@ const PDFDocument = ({ personalData, educationData, practicalData, config }) => 
       );
     }
     
-    // Default: top
     return (
       <>
         <PersonalSection />

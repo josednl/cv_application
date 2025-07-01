@@ -1,6 +1,7 @@
 import './styles/App.css';
 import { useState, useRef, useCallback } from 'react';
 import { PDFDownloadLink } from '@react-pdf/renderer';
+import { exampleData } from '@/data/exampleData.js';
 import Menu from '@/components/Menu/Menu.jsx';
 import Tabs from '@/components/Builder/Tabs.jsx';
 import Resume from '@/components/Resume/Resume.jsx';
@@ -30,6 +31,15 @@ function App() {
 	const [pdfKey, setPdfKey] = useState(0);
 	const [isDataChanging, setIsDataChanging] = useState(false); 
 	const contentRef = useRef();
+	const emptyPersonalData = { name: '', email: '', phone: '', location: '' };
+	const emptyEducationData = [];
+	const emptyPracticalData = [];
+
+	function resetAllData() {
+		setPersonalData(emptyPersonalData);
+		setEducationData(emptyEducationData);
+		setPracticalData(emptyPracticalData);
+	}
 
 	function handleDataChange(e, stateSetter) {
 		const { name, value } = e.target;
@@ -39,7 +49,7 @@ function App() {
 		setTimeout(() => {
 			setPdfKey(prev => prev + 1);
 			setIsDataChanging(false);
-		}, 100);
+		}, 300);
 	}
 
 	const handleArrayDataChange = useCallback((newData, setter) => {
@@ -58,7 +68,7 @@ function App() {
 
 	function setStyleConfiguration (color, alignment, font) {
 		setConfig({...config, color: color, alignment: alignment, font: font});
-		window.alert('Saved style customization');
+		window.alert('The style customization was saved');
 	}
 
 	const sectionRefs = {
@@ -77,108 +87,23 @@ function App() {
 	}, []);
 
 	function loadData () {
-		const confirmed = window.confirm('Are you sure you want to upload this data? This will overwrite all current information.');
-
-    	if (!confirmed) return;
+		if (!window.confirm('Are you sure you want to upload this data? This will overwrite all current information.')) return;
 
 		setPdfError(null);
-
-		setPersonalData({
-			name: '',
-			email: '',
-			phone: '',
-			location: '',
-		});
-		setEducationData([]);
-		setPracticalData([]);
-
+		resetAllData();
 		setPdfKey(prev => prev + 1);
 
 		setTimeout(() => {
-			setPersonalData({
-				name: 'Michael Anthony Reynolds',
-				email: 'michael.reynolds87@example.com',
-				phone: '+1 (312) 555-8432',
-				location: 'Chicago, IL, USA'
-			});
-			
-			setEducationData([
-				{
-					id: crypto.randomUUID(),
-					school: 'University of Illinois at Urbana-Chanpaign',
-					degree: 'Bachelor of Science in Computer Engineering',
-					startDate: '1-8-2012',
-					endDate: '28-5-2016',
-					location: 'Urbana-Chanpaign, IL',
-					description: 'Focused on embedded systems, data structures, and systems programming. Participated in undergraduate research on machine learning applications in IoT.'
-				},
-				{
-					id: crypto.randomUUID(),
-					school: 'Stanford University',
-					degree: 'Master of Science in Artificial Intelligence',
-					startDate: '15-9-2016',
-					endDate: '10-6-2018',
-					location: 'Stanford, CA',
-					description: 'Specialized in deep learning and natural language processing. Completed thesis on generative adversarial networks in medical image analysis.'
-				},
-				{
-					id: crypto.randomUUID(),
-					school: 'MIT xPro',
-					degree: 'Professional Certificate in Data Engineering',
-					startDate: '5-1-2020',
-					endDate: '30-6-2020',
-					location: 'Online',
-					description: 'Completed a six-month intensive program covering big data pipelines, cloud technologies, and real-time data processing using Apache Spark and Kafka.'
-				},
-			]);
-			
-			setPracticalData([
-				{
-					id: crypto.randomUUID(),
-					company: 'Deloitte Consulting LLP',
-					job: 'Senior Data Analyst',
-					startDate: '10-7-2020',
-					endDate: '',
-					location: 'Chicago, IL (Hybrid)',
-					description: 'Leads data-driven consulting projects.'
-				},
-				{
-					id: crypto.randomUUID(),
-					company: 'Capital One',
-					job: 'Data Analyst',
-					startDate: '3-3-2018',
-					endDate: '30-6-2020',
-					location: 'McLean, VA',
-					description: 'Developed dashboards and models to optimize credit risk decisions and marketing campaigns. Automated reporting processes to reduce manual work by 40%.'
-				},
-				{
-					id: crypto.randomUUID(),
-					company: 'Intel Corporation',
-					job: 'Data Science Intern',
-					startDate: '1-6-2017',
-					endDate: '31-8-2017',
-					location: 'Santa Clara, CA',
-					description: 'Built predictive models to forecast chip performance variability. Collaborated with hardware teams to integrate data insights into development cycles.'
-				},
-			]);
-		}, 100);
+			setPersonalData(exampleData.personalData);
+			setEducationData(exampleData.educationData);
+			setPracticalData(exampleData.practicalData);
+		}, 300);
     }
 
-	function cleanData() {
-		const confirmed = window.confirm('Are you sure you want to delete all data?');
-
-    	if (!confirmed) return;
-
+	function clearData() {
+		if (!window.confirm('Are you sure you want to delete all data?')) return;
 		setPdfError(null);
-
-		setPersonalData({
-			name: '',
-			email: '',
-			phone: '',
-			location: '',
-		});
-		setEducationData([]);
-		setPracticalData([]);
+		resetAllData();
 	}
 
 	const createPDFDocument = useCallback(() => {
@@ -200,74 +125,94 @@ function App() {
 		}
 	}, [personalData, educationData, practicalData, config, pdfKey, isDataChanging, handlePDFError]);
 
+	function renderBuilderView() {
+		return (
+			<>
+				<div>
+					<Tabs 
+						handleDataChange={handleDataChange} 
+						handleArrayDataChange={handleArrayDataChange}
+						personalData={personalData} 
+						personalDataSetter={setPersonalData} 
+						educationData={educationData} 
+						educationalDataSetter={setEducationData} 
+						practicalDataSetter={setPracticalData} 
+						practicalData={practicalData} 
+					/>
+					<div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', margin: '15px 0px', gap: '10px'}}>
+						{canGeneratePDF() && !isDataChanging && (
+							<PDFDownloadLink
+								key={`pdf-download-${pdfKey}`}
+								document={createPDFDocument()}
+								fileName='resume.pdf'
+								onError={handlePDFError}
+							>
+								{({ loading, error }) => (
+									<Button 
+										type='danger' 
+										text={loading ? 'Generating PDF...' : error ? 'PDF Error' : 'Download PDF'} 
+										icon={DownloadIcon}
+									/>
+								)}
+							</PDFDownloadLink>
+						)}
+						<Button 
+							text='Load Example Data' 
+							handleClick={loadData} 
+						/>
+						<Button 
+							text='Clear All' 
+							type='success' 
+							handleClick={clearData} 
+						/>
+					</div>
+					
+					{pdfError && (
+						<div style={{
+							backgroundColor: '#ffebee',
+							color: '#c62828',
+							padding: '10px',
+							borderRadius: '4px',
+							margin: '10px 0',
+							border: '1px solid #ef5350'
+						}}>
+							Error: {pdfError}
+						</div>
+					)}
+				</div>
+				<div ref={contentRef}>
+					<Resume 
+						personalData={personalData} 
+						educationData={educationData} 
+						practicalData={practicalData} 
+						styles={config} 
+						sectionRefs={sectionRefs} 
+					/>
+				</div>
+			</>
+		);
+	}
+
+	function renderStyleView() {
+		return (
+			<>
+				<StyleBar 
+					handleStyles={setStyleConfiguration} 
+					styles={config} 
+					temporalConfig={setTemporalConfig} 
+				/>
+				<Preview 
+					styles={temporalConfig} 
+				/>
+			</>
+		);
+	}
+
 	return (
 		<>
 			<Menu handleClick={setMenuIndex} />
 			<main>
-				{activeMenuIndex === 0 ? (
-					<>
-						<div>
-							<Tabs 
-								handleDataChange={handleDataChange} 
-								handleArrayDataChange={handleArrayDataChange}
-								personalData={personalData} 
-								personalDataSetter={setPersonalData} 
-								educationData={educationData} 
-								educationalDataSetter={setEducationData} 
-								practicalDataSetter={setPracticalData} 
-								practicalData={practicalData} 
-							/>
-							<div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', margin: '15px 0px', gap: '10px'}}>
-								{canGeneratePDF() && !isDataChanging && (
-									
-									<PDFDownloadLink
-										key={`pdf-download-${pdfKey}`}
-										document={createPDFDocument()}
-										fileName='resume.pdf'
-										onError={handlePDFError}
-									>
-										{({ loading, error }) => (
-											<Button 
-												type='danger' 
-												text={loading ? 'Generating PDF...' : error ? 'PDF Error' : 'Download PDF'} 
-												icon={DownloadIcon}
-											/>
-										)}
-									</PDFDownloadLink>
-								)}
-								<Button text='Load Example Data' handleClick={loadData} />
-								<Button text='Clean' type='success' handleClick={cleanData} />
-							</div>
-							
-							{pdfError && (
-								<div style={{
-									backgroundColor: '#ffebee',
-									color: '#c62828',
-									padding: '10px',
-									borderRadius: '4px',
-									margin: '10px 0',
-									border: '1px solid #ef5350'
-								}}>
-									Error: {pdfError}
-								</div>
-							)}
-						</div>
-						<div ref={contentRef}>
-							<Resume 
-								personalData={personalData} 
-								educationData={educationData} 
-								practicalData={practicalData} 
-								styles={config} 
-								sectionRefs={sectionRefs} 
-							/>
-						</div>
-					</>
-				) : (
-					<>
-						<StyleBar handleStyles={setStyleConfiguration} styles={config} temporalConfig={setTemporalConfig} />
-						<Preview styles={temporalConfig} />
-					</>
-				)}
+				 {activeMenuIndex === 0 ? renderBuilderView() : renderStyleView()}
 			</main>
 		</>
 	)
